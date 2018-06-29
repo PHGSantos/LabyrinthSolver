@@ -5,7 +5,8 @@
         <group>
             <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/LabyrinthSolver.java</file>
             <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/Labyrinth.java</file>
-            <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/Move.java</file>
+            <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/Chromosome.java</file>
+            <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/Coordinates.java</file>
             <file>file:/C:/Users/vaio/Desktop/LabyrinthSolver/src/labyrinthsolver/Robot.java</file>
         </group>
     </open-files>

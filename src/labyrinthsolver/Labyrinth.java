@@ -24,12 +24,14 @@ public class Labyrinth {
     */
     
     private int size;
+    private int minSteps;
     private Coordinates start;
     private Coordinates end;
     private String fileName;
     private String[][] labyrinth;
     
     public Labyrinth(String fileName){
+        this.minSteps = 0;
         this.fileName = fileName;
         this.build();
     } 
@@ -59,12 +61,13 @@ public class Labyrinth {
       //da segunda em diante, é o labirinto
       linha = lerArq.readLine();
       String[] split = linha.split(" ");
-      
-        
+       
       for(int i = 0; i < this.size; i++){
         for(int j = 0; j < this.size; j++){
             labyrinth[i][j] = split[j];
-            if(split[j].equalsIgnoreCase("S")){
+            if(split[j].equalsIgnoreCase("0")){ 
+                this.minSteps++;
+            }else if(split[j].equalsIgnoreCase("S")){
                 this.start = new Coordinates(i,j);   
             }else if(split[j].equalsIgnoreCase("E")){
                 this.end = new Coordinates(i,j);
@@ -95,6 +98,14 @@ public class Labyrinth {
 
     public void setSize(int size) {
         this.size = size;
+    }
+
+    public int getMinSteps() {
+        return minSteps;
+    }
+
+    public void setMinSteps(int minSteps) {
+        this.minSteps = minSteps;
     }
 
     public Coordinates getStart() {
