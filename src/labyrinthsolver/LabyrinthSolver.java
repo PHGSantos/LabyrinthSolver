@@ -18,9 +18,15 @@ public class LabyrinthSolver {
         Labyrinth labyrinth = new Labyrinth("easy.txt");
         labyrinth.show();
         
-        //Chromosome c = new Chromosome(10, labyrinth);
+        //int chromosomeSize = labyrinth.getMinSteps()*2;
+        
+        //Chromosome c = new Chromosome(chromosomeSize, labyrinth);
         //c.randomize();
         //c.display();
+        //c.evaluate();
+        //System.out.println(c.getRobot().getCoordinates().toString());
+        
+        
         
         GenethicAlgorithm GA = new GenethicAlgorithm(labyrinth);
         

@@ -19,6 +19,10 @@ public class Coordinates {
     }
     
     @Override
+    public String toString(){
+        return "("+Integer.toString(this.x) +","+ Integer.toString(this.y)+ ")";
+    }    
+    @Override
     public boolean equals(Object o){
         Coordinates c = (Coordinates) o;
         if(this.getX() == c.getX() && this.getY() == c.getY())

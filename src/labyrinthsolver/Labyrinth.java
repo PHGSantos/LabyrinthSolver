@@ -45,6 +45,9 @@ public class Labyrinth {
         }
     }
     
+    public boolean isWall(int x, int y){
+        return this.labyrinth[x][y].equalsIgnoreCase("#");
+    }
     
     public String[][] build(){
     try {

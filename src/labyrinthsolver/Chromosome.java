@@ -32,39 +32,73 @@ public class Chromosome {
         this.labyrinth = labyrinth;
         this.limit = labyrinth.getMinSteps();
         this.robot = new Robot(labyrinth.getStart());
+        this.steps = new ArrayList<>();
+        
     }
     
     
-    private void track(){
+    public void track(){
         
-        int x = robot.getCoordinates().getX();
-        int y = robot.getCoordinates().getY();
+        int x,y; 
         
         String[][] labirinto = this.labyrinth.getLabyrinth(); 
         
+        //System.out.println("Inicio:("+this.robot.getCoordinates().getX()+","+this.robot.getCoordinates().getY()+")");
+        
         for(int i = 0; i < this.steps.size() ; i++){
-            if(steps.get(i).equals("DOWN")){
-                robot.getCoordinates().setY(y+1);
-            }else if(steps.get(i).equals("LEFT")){
-                robot.getCoordinates().setX(x-1);
-            }else if(steps.get(i).equals("RIGHT")){
-                robot.getCoordinates().setY(x+1);
-            }else if(steps.get(i).equals("UP")){//UP
-                robot.getCoordinates().setY(y-1);
-            }else{
-                //se for parado, faz nada
+            
+            x = robot.getCoordinates().getX();//linhas
+            y = robot.getCoordinates().getY();//colunas
+            int n;//cordenada de teste
+            switch (steps.get(i)) {
+                case "DOWN":
+                    n = x + 1;
+                    if (!this.labyrinth.isWall(n, y)){
+                        robot.getCoordinates().setX(x++);
+                    }else{
+                        this.robot.increaseCrashes();
+                    }
+                    break;
+                case "LEFT":
+                    n = y - 1;
+                    if (!this.labyrinth.isWall(x, n)){
+                        y--;
+                        robot.getCoordinates().setY(y);
+                    }else{
+                        this.robot.increaseCrashes();
+                    }
+                    break;
+                case "RIGHT":
+                    n = y + 1;
+                    if (!this.labyrinth.isWall(x, n)){
+                        y++;
+                        robot.getCoordinates().setY(y);
+                    }else{
+                        this.robot.increaseCrashes();
+                    }
+                    break;
+                case "UP":
+                    n = x - 1;
+                    if (!this.labyrinth.isWall(n, y)){
+                        x--;
+                        robot.getCoordinates().setX(x);
+                    }else{
+                        this.robot.increaseCrashes();
+                    }
+                    break;
+            //se for parado, faz nada
+                default:
+                    break;
             }
             
-            if(labirinto[x][y].equalsIgnoreCase("#")){
-                this.robot.increaseCrashes();
-            }
+            //System.out.println("step #"+i+":"+"("+x+","+y+")");
         }
     }
 
     
     public void randomize(){
         
-        this.steps = new ArrayList<>();
+        //this.steps = new ArrayList<>();
         Random r = new Random();
         int randomValue;
         
@@ -96,19 +130,25 @@ public class Chromosome {
     
     public double evaluate(){
         track();
-        double crashPenalty = 100;
-        double endPrize = 500;
-        double distancePrize = 300;
-        double stepsPrize = 200;
+        double crashPenalty = 20;
+        double endPrize = 50;
+        double distancePrize = 30;
+        double stepsPenalty = 10;
+        
+        System.out.println("\nStart:"+score);
         
         int crashes = this.robot.getCrashed();  
         
         //atualiza o escore/fitness para cada batida.
         this.score = score - crashes*crashPenalty;
+        System.out.println("Crashes:"+score);
         
         //atualiza para quem atingiu o final
-        if(this.robot.getCoordinates().equals(labyrinth.getEnd()))
+        if(this.robot.getCoordinates().equals(labyrinth.getEnd())){
             this.score = score + endPrize;
+            System.out.println("End:"+score);
+        }
+        
         
         //para a distancia em relação ao final - distancia manhattan 
         
@@ -120,14 +160,13 @@ public class Chromosome {
         
         
         double distance = Math.abs(xr-xe) + Math.abs(yr-ye); //|x1-x2|+|y1-y2|
-        
         this.score = score + (1/distance)*distancePrize;
-     
+        System.out.println("Manhattan:"+score + " | distance = "+distance);
          
         //recompensar pelo numero de passos gastos?
         int difference = this.steps.size() - this.limit;
-        
-        this.score = score + difference*stepsPrize;
+        this.score = score - difference*stepsPenalty;
+        System.out.println("Difference:"+score);
         
         return score;
     }
@@ -146,6 +185,13 @@ public class Chromosome {
         Random r = new Random();
         int cut_point_A = r.nextInt(this.size);//retorna um int aleatorio entre 0 e size-1;
         int cut_point_B = r.nextInt(other.getSize());
+        
+        //System.out.println("CPA:"+cut_point_A);
+        //System.out.println("CPB:"+cut_point_B);
+        
+        //System.out.println("C1:"+this.steps.size());
+        //System.out.println("C2:"+other.getSteps().size());
+        
         
         String s1 = null;
         
@@ -281,7 +327,7 @@ public class Chromosome {
     public Chromosome mutation_remove_step(ArrayList<String> child_steps){
           
         int last_index = child_steps.size();
-        child_steps.remove(last_index);
+        child_steps.remove(last_index-1);
         
         Chromosome child = new Chromosome(child_steps.size(),this.labyrinth);
         child.setSteps(child_steps);

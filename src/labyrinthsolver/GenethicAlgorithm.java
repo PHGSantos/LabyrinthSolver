@@ -43,14 +43,17 @@ public class GenethicAlgorithm {
             this.population.clear();
             this.population.addAll(newPopulation);
             best = getBestSolution();
-            System.out.println("Geração #"+currentGen+"->"+best+" com score " + best.getScore());
+            System.out.println("Geração #"+currentGen+"->"+best.getRobot().getCoordinates().toString()+" com score " + best.getScore());
         }
     }
     
     public void initializePopulation(int populationSize, int chromosomeSize){
         this.population.clear();
+        Chromosome c;
         for(int i = 0; i < populationSize; i++){
-            this.population.add(new Chromosome(chromosomeSize, this.labyrinth));
+            c = new Chromosome(chromosomeSize, this.labyrinth);
+            c.randomize();
+            this.population.add(c);
         }
     
         System.out.println("População criada com " + populationSize +" individuos");
