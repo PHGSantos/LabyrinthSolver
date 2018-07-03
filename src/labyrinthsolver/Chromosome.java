@@ -99,6 +99,7 @@ public class Chromosome {
         double crashPenalty = 100;
         double endPrize = 500;
         double distancePrize = 300;
+        double stepsPrize = 200;
         
         int crashes = this.robot.getCrashed();  
         
@@ -118,11 +119,15 @@ public class Chromosome {
         int ye = this.labyrinth.getEnd().getY();
         
         
-        int distance = Math.abs(xr-xe) + Math.abs(yr-ye); //|x1-x2|+|y1-y2|
+        double distance = Math.abs(xr-xe) + Math.abs(yr-ye); //|x1-x2|+|y1-y2|
         
         this.score = score + (1/distance)*distancePrize;
      
+         
         //recompensar pelo numero de passos gastos?
+        int difference = this.steps.size() - this.limit;
+        
+        this.score = score + difference*stepsPrize;
         
         return score;
     }
@@ -184,7 +189,7 @@ public class Chromosome {
     }
     
     //Mutar o cromossomo inteiro?(da no mesmo que randomizar denovo) Ou mutar uma parte específica? Ou mutar somente se houver batida?
-    public Chromosome mutation(Chromosome parent){
+    public Chromosome mutation(){
         
         double change_rate = 0.500;
         double add_rate = 0.750;
@@ -214,6 +219,14 @@ public class Chromosome {
         
         
         return child;
+    }
+
+    public Robot getRobot() {
+        return robot;
+    }
+
+    public double getScore() {
+        return score;
     }
     
     public Chromosome mutation_change_steps(ArrayList<String> child_steps,double x){

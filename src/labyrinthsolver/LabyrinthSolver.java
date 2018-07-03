@@ -15,12 +15,20 @@ public class LabyrinthSolver {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Labyrinth labyrinth = new Labyrinth("test_labyrinth1.txt");
+        Labyrinth labyrinth = new Labyrinth("easy.txt");
         labyrinth.show();
         
-        Chromosome c = new Chromosome(10, labyrinth);
-        c.randomize();
-        c.display();
+        //Chromosome c = new Chromosome(10, labyrinth);
+        //c.randomize();
+        //c.display();
+        
+        GenethicAlgorithm GA = new GenethicAlgorithm(labyrinth);
+        
+        int numGenerations = 20; 
+        int populationSize = 400;
+        int chromosomeSize = labyrinth.getMinSteps()*2;
+        
+        GA.run(numGenerations, populationSize, chromosomeSize);
     }
     
 }

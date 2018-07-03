@@ -10,13 +10,7 @@ package labyrinthsolver;
  * @author Pedro H. Gomes
  */
 public class Robot {
-     /*
-        L - left
-        R - right
-        U - up
-        D - down
-    */
-    
+     
     private Coordinates coordinates;
     private int crashed;
     
